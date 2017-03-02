@@ -54,22 +54,21 @@ services:
   # See symfony docs: https://symfony.com/doc/current/service_container/parent_services.html
   #
   # The class type is derived at compile time (see ApiManagerCompilerPass))
-  # The first 2 constructor arguments (baseUrl and config) are setup at compile time (see ApiManagerCompilerPass)
-  # The third constructor argument is setup by the concrete version of this type (e.g. api.contacts)
+  # The constructor arguments (baseUrl and config) are setup at compile time (see ApiManagerCompilerPass)
   #
   api.base_content_type:
     abstract: true
-    arguments: [null, null, null]
+    arguments: [null, null]
 
   api.contacts:
     parent: api.base_content_type
-    arguments:
-      index_2: 'contacts'
+    tags:
+      - { name: 'ContentType', content_type_key: "contacts" }
 
   api.payments:
     parent: api.base_content_type
-    arguments:
-      index_2: 'payments'
+    tags:
+      - { name: 'ContentType', content_type_key: "payments" }
 
 
 

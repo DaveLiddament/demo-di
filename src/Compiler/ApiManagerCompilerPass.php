@@ -55,9 +55,23 @@ class ApiManagerCompilerPass implements CompilerPassInterface
 
                     // Update first constructor argument (baseURL)
                     $baseContentTypeServiceDefinition->replaceArgument(0, $baseUrl);
+                    
+                    
+                    
+                    // Finally setup content types
+                    $contentTypeServices = $container->findTaggedServiceIds('ContentType');
+                    foreach($contentTypeServices as $contentTypeId => $contentTypeTags) {
+                        foreach($contentTypeTags as $contentTypeTag) {
+                            $contentTypeKey = $contentTypeTag['content_type_key'];
+                            $contentTypeConfig = $apiManagerConfig[$contentTypeKey];
 
-                    // Update second constructor argument (the config specific for this Api Manager)
-                    $baseContentTypeServiceDefinition->replaceArgument(1, $apiManagerConfig);
+
+                            $contentTypeServiceDefinition = $container->findDefinition($contentTypeId);
+                            // Update the second constructor argument (config). This is specific to API manager AND content type
+                            $contentTypeServiceDefinition->replaceArgument(1, $contentTypeConfig);
+                        }
+                    }
+                    
                 }
             }
         }

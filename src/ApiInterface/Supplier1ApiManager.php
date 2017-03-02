@@ -14,12 +14,11 @@ class Supplier1ApiManager implements ApiManagerInterface
      * Supplier1ApiManager constructor.
      * @param $baseUrl
      * @param $config
-     * @param $contentType
      */
-    public function __construct($baseUrl, array $config, $contentType)
+    public function __construct($baseUrl, array $config)
     {
         $this->baseUrl = $baseUrl;
-        $this->config = $config[$contentType];
+        $this->config = $config;
     }
 
 

@@ -1,0 +1,76 @@
+parameters:
+
+  # Determines which of the API manager interafaces to user. Value must be the api_name from one of the API Manager services with the tag name of "ApiManager" (i.e. service_1 or service_2)
+  api_manager_name: supplier_2
+
+
+  # Config for each of the API managers from the different suppliers. Holds API mappings for each content type
+  api_managers:
+
+    supplier_1:
+      base_url: http://supplier_1.com/
+      contacts:
+        field_1: contact_field_A_supplier_1
+        field_2: contact_field_B_supplier_1
+      payments:
+        field_1: payment_field_A_supplier_1
+        field_2: payment_field_B_supplier_1
+    
+    supplier_2:
+      base_url: http://supplier_2.com/
+      contacts:
+        field_1: contact_field_X_supplier_2
+        field_2: contact_field_Y_supplier_2
+      payments:
+        field_1: payment_field_X_supplier_2
+        field_2: payment_field_Y_supplier_2
+
+
+
+
+services:
+
+
+  #
+  # Each API manager is a tagged service.
+  # New ones are registered here. The tag paraemter api_name must match up with the name of an api_manager in the config section.
+  #
+  # See symfony docs for tagged services: https://symfony.com/doc/current/service_container/tags.html
+  #
+  api.manager.supplier_1:
+    class: Demo\SymfonyContainer\ApiInterface\Supplier1ApiManager
+    tags:
+      - { name: 'ApiManager', api_name: "supplier_1" }
+
+  api.manager.supplier_2:
+    class: Demo\SymfonyContainer\ApiInterface\Supplier2ApiManager
+    tags:
+      - { name: 'ApiManager', api_name: "supplier_2" }
+
+
+
+  #
+  # Base content type that all other content types (e.g. contacts, payments, etc) extend
+  # See symfony docs: https://symfony.com/doc/current/service_container/parent_services.html
+  #
+  # The class type is derived at compile time (see ApiManagerCompilerPass))
+  # The first 2 constructor arguments (baseUrl and config) are setup at compile time (see ApiManagerCompilerPass)
+  # The third constructor argument is setup by the concrete version of this type (e.g. api.contacts)
+  #
+  api.base_content_type:
+    abstract: true
+    arguments: [null, null, null]
+
+  api.contacts:
+    parent: api.base_content_type
+    arguments:
+      index_2: 'contacts'
+
+  api.payments:
+    parent: api.base_content_type
+    arguments:
+      index_2: 'payments'
+
+
+
+

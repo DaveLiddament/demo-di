@@ -1,0 +1,24 @@
+{
+  "name": "demo/symfony-di",
+  "description": "Example of Symfony Container setup",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Dave Liddament",
+      "email": "dave@lampbristol.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "symfony/dependency-injection": "^3.2",
+    "symfony/yaml": "^3.2",
+    "symfony/config": "^3.2",
+    "symfony/console": "^3.2"
+  },
+  "autoload": {
+    "psr-4" : {
+      "Demo\\SymfonyContainer\\" : "src/"
+    }
+  }
+}
